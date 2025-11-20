@@ -4,20 +4,16 @@ const PRIMARY_COLOR = '#FF7F41'; // Bright Orange (Maven Cafe theme)
 const SECONDARY_COLOR = '#333333'; // Dark Gray for text/icons
 const DANGER_COLOR = '#dc3545'; // Red for cancellation/logout
 const SUCCESS_COLOR = '#4CAF50'; // Bright Green for confirmation
-const BACKGROUND_COLOR = '#f0f0f0'; // Light body background (Soft background)
-const CARD_RADIUS = '16px'; // Large rounded corners
+const BACKGROUND_COLOR = '#fbfbfb'; // Light body background (Updated for better contrast)
+const CARD_RADIUS = '12px'; // Standard rounded corners for aesthetic fit
 
 // --- IMAGE FILE REFERENCES ---
-// Note: Using uploaded files for the two specific cards shown in your image, if available.
-const PLACEHOLDER_HOME_BG = 'uploaded:image_92fbe9.jpg'; // Home banner image
-const PLACEHOLDER_TEA_CARD = 'uploaded:image_0feae6.jpg'; // Image for tea (Your uploaded image)
-const PLACEHOLDER_COFFEE_CARD = 'uploaded:image_92fc49.jpg'; // Image for coffee selection/card
-const PLACEHOLDER_GREEN_TEA_CARD = 'uploaded:image_936d3b.jpg'; // Image for green tea selection/card
-const PLACEHOLDER_CONFIRM_BG = 'uploaded:image_92fc9d.jpg'; // Image for order confirmation screen
-
-// --- NEW IMAGE REFERENCES ADDED FOR ITEM SELECTION PAGE ---
-const PLACEHOLDER_MILK_CARD = 'https://tmdone-cdn.s3.me-south-1.amazonaws.com/store-covers/133003776906429295.jpg'; // Image for milk (Your uploaded image)
-const PLACEHOLDER_WATER_CARD = 'uploaded:image_92fc49.jpg'; // Re-using coffee image for water placeholder
+const PLACEHOLDER_HOME_BG = 'uploaded:image_92fbe9.jpg';
+const PLACEHOLDER_TEA_CARD = 'https://tmdone-cdn.s3.me-south-1.amazonaws.com/store-covers/133003776906429295.jpg';
+const PLACEHOLDER_COFFEE_CARD = 'https://i.pinimg.com/474x/7a/29/df/7a29dfc903d98c6ba13b687ef1fa1d1a.jpg';
+const PLACEHOLDER_MILK_CARD = 'https://www.shutterstock.com/image-photo/almond-milk-cup-glass-on-600nw-2571172141.jpg';
+const PLACEHOLDER_WATER_CARD = 'https://images.stockcake.com/public/d/f/f/dffca756-1b7f-4366-8b89-4ad6f9bbf88a_large/chilled-water-glass-stockcake.jpg';
+const PLACEHOLDER_CONFIRM_BG = 'uploaded:image_92fc9d.jpg';
 // --------------------------------------------------------
 
 
@@ -25,7 +21,6 @@ export const styles = {
     // Expose the image constants in the exported styles object
     PLACEHOLDER_TEA_CARD,
     PLACEHOLDER_COFFEE_CARD,
-    PLACEHOLDER_GREEN_TEA_CARD,
     PLACEHOLDER_MILK_CARD,
     PLACEHOLDER_WATER_CARD,
     PLACEHOLDER_CONFIRM_BG,
@@ -45,7 +40,7 @@ export const styles = {
         flexGrow: 1,
     },
     screenPadding: {
-        padding: '15px',
+        padding: '20px', // Slightly increased padding
         paddingBottom: '100px',
     },
     loadingContainer: {
@@ -71,6 +66,7 @@ export const styles = {
         position: 'sticky',
         top: 0,
         zIndex: 10,
+        height: '60px', 
     },
     appTitle: {
         margin: 0,
@@ -123,24 +119,25 @@ export const styles = {
         fontWeight: '600',
     }),
     
-    // III. Buttons
+    // III. Buttons (Updated to Aesthetic/Glow look)
     primaryButton: {
         width: '100%',
-        padding: '16px',
-        margin: '10px 0',
-        backgroundColor: PRIMARY_COLOR,
+        padding: '18px',
+        margin: '15px 0',
+        backgroundColor: '#ff4500', 
         color: 'white',
         border: 'none',
         borderRadius: CARD_RADIUS,
         cursor: 'pointer',
-        fontSize: '1.1em',
-        fontWeight: 'bold',
-        boxShadow: '0 6px 12px rgba(255, 127, 65, 0.5)',
+        fontSize: '1.15em', 
+        fontWeight: '900', 
+        boxShadow: `0 0 15px #ff450099, 0 6px 12px rgba(0, 0, 0, 0.2)`,
         transition: 'all 0.2s',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         gap: '8px',
+        letterSpacing: '1px',
     },
     secondaryButton: {
         width: '100%',
@@ -148,12 +145,12 @@ export const styles = {
         margin: '5px 0 10px 0',
         backgroundColor: 'white',
         color: SECONDARY_COLOR,
-        border: '1px solid #ddd',
+        border: '2px solid #eee', 
         borderRadius: CARD_RADIUS,
         cursor: 'pointer',
         fontSize: '1.1em',
-        fontWeight: 'bold',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+        fontWeight: '600',
+        boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -325,40 +322,24 @@ export const styles = {
         transition: 'all 0.3s',
     }),
 
-    // --- itemButton style defined for ItemSelectionPage.jsx ---
+    // 🛑 CRITICAL FIX: Ensure the itemButton (card frame) has a solid height.
     itemButton: {
         width: '100%',
-        minHeight: '200px',
+        height: '150px', // Fixed height for consistency
         backgroundColor: 'white',
-        borderRadius: CARD_RADIUS,
-        boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
+        borderRadius: '10px', 
+        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', 
         border: 'none',
         cursor: 'pointer',
-        overflow: 'hidden',
-        
-        // This static background will be overridden by inline styles in JSX for variety
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url(${PLACEHOLDER_TEA_CARD})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        
-        // Flex properties to position icon/text content to the bottom-left
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        alignItems: 'flex-start',
-        
-        // Styling the icon/text content to be readable over the image
-        color: 'white',
-        textShadow: '0 1px 3px rgba(0,0,0,0.5)',
-        fontSize: '1.8em', // Large text
-        fontWeight: 'bold',
-        padding: '15px',
-        textAlign: 'left',
+        overflow: 'hidden', // Crucial: clips content/image to the card boundaries
+        padding: '0', 
+        transition: 'transform 0.2s',
+        position: 'relative', 
     },
     // -----------------------------------------------------------
     
     // Home Page Banner (Good Morning)
-    welcomeBanner: (imageUrl = PLACEHOLDER_HOME_BG) => ({ // Uses uploaded:image_92fbe9.jpg
+    welcomeBanner: (imageUrl = PLACEHOLDER_HOME_BG) => ({ 
         minHeight: '180px',
         marginBottom: '25px',
         padding: '20px',
@@ -375,36 +356,52 @@ export const styles = {
     }),
     
     itemSelectionGrid: {
-        display: 'grid',
-        gridTemplateColumns: '1fr',
-        gap: '20px',
-        margin: '20px 0',
-    },
-    imageCard: {
-        backgroundColor: 'white',
-        border: 'none',
-        borderRadius: CARD_RADIUS,
-        boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
-        overflow: 'hidden',
-        cursor: 'pointer',
-        minHeight: '200px',
-    },
-    // This style is used for the item cards on the Home screen and Item Selection Page
-    itemCardContent: (imageUrl = PLACEHOLDER_COFFEE_CARD) => ({ // Uses uploaded:image_92fc49.jpg
-        width: '100%',
-        height: '100%',
-        minHeight: '200px', // Must match minHeight of imageCard
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url(${imageUrl})`, // Added a slight overlay for text readability
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
         display: 'flex',
-        alignItems: 'flex-end',
-        padding: '15px',
+        flexDirection: 'column',
+        gap: '15px',
+        margin: '0',
+    },
+    
+    // 🛑 CRITICAL FIX: The container for the text and white line (must take 100% height/width)
+    itemImageOverlay: (imageUrl) => ({ 
+        width: '100%',
+        height: '100%', // Must be 100% of itemButton height (150px) to prevent gaps
+        
+        // Darker, more abrupt gradient at the bottom for better text contrast
+        backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.5) 40%, rgba(0, 0, 0, 0) 80%), url(${imageUrl})`,
+        backgroundSize: 'cover', // Ensures image covers the entire 150px height
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat', 
+
+        // Flex settings to stack text and line at the bottom-left
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-end', // Aligns content to the very bottom
+        padding: '15px 20px 10px 20px', // Adjusted bottom padding to match image spacing
+        boxSizing: 'border-box',
+        
+        // Text styling
         color: 'white',
-        textShadow: '0 1px 3px rgba(0,0,0,0.5)',
-        fontSize: '1.8em', // Increased font size
-        fontWeight: 'bold',
+        fontWeight: '900', 
+        fontSize: '26px', 
+        letterSpacing: '1px', 
+        textShadow: '0 2px 4px rgba(0, 0, 0, 0.9)', 
+        textTransform: 'uppercase',
+        lineHeight: '1', 
     }),
+    
+    // 🛑 White line adjustment
+    itemWhiteLine: {
+        backgroundColor: 'white',
+        height: '4px', 
+        width: '60px', 
+        marginTop: '6px', 
+        marginBottom: '0', 
+        borderRadius: '2px', 
+    },
+    
+    // ... (rest of styles remain the same)
     
     // Item Config buttons (Type selection, Sugar level)
     configButtonContainer: {
@@ -464,7 +461,7 @@ export const styles = {
         margin: '20px 0',
         boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
     },
-    confirmationImageBanner: (imageUrl = PLACEHOLDER_CONFIRM_BG) => ({ // Uses uploaded:image_92fc9d.jpg
+    confirmationImageBanner: (imageUrl = PLACEHOLDER_CONFIRM_BG) => ({ 
         backgroundColor: SECONDARY_COLOR,
         borderRadius: CARD_RADIUS,
         overflow: 'hidden',
