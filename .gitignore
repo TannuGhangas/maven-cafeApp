@@ -1,0 +1,56 @@
+# =========================
+# Global Ignore for Entire Project
+# =========================
+
+# Node modules (frontend + backend)
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+logs/
+
+# Build & Output
+dist/
+build/
+.next/
+out/
+
+# Vite
+.vite/
+*.vite
+
+# Local environment files (both frontend & backend)
+.env
+.env.*
+*.env
+
+# OS system files
+.DS_Store
+Thumbs.db
+
+# Editor configs
+.vscode/
+.idea/
+
+# Cache
+.cache/
+.eslintcache
+.parcel-cache/
+turbo/
+coverage/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# Expo/React Native (if later added)
+.expo/
+.expo-shared/
+
+# Others
+*~
