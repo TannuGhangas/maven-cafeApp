@@ -1,6 +1,9 @@
 # =========================
 # Global Ignore for Entire Project
 # =========================
+node_modules/
+.env
+
 
 # Node modules (frontend + backend)
 node_modules/
@@ -12,6 +15,8 @@ yarn-error.log*
 pnpm-debug.log*
 *.log
 logs/
+serviceAccountKey.json
+
 
 # Build & Output
 dist/

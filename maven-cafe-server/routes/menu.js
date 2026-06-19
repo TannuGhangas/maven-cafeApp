@@ -23,7 +23,7 @@ router.get('/menu', authorize(['admin', 'user', 'kitchen']), async (req, res) =>
                 addOns: [{ name: "Ginger", available: true }, { name: "Salt", available: true }],
                 sugarLevels: [{ level: 0, available: true }, { level: 1, available: true }, { level: 2, available: true }, { level: 3, available: true }],
                 itemImages: {
-                    tea: 'https://tmdone-cdn.s3.me-south-1.amazonaws.com/store-covers/133003776906429295.jpg',
+                    tea: 'https://instacuppastore.com/cdn/shop/articles/blog-authentic-chai-recipe-morning-routine-cover_5b49c9b2-eef8-4268-bab7-3c52fff3eb49.jpg?v=1775497167',
                     coffee: 'https://i.pinimg.com/474x/7a/29/df/7a29dfc903d98c6ba13b687ef1fa1d1a.jpg',
                     water: 'https://images.stockcake.com/public/d/f/f/dffca756-1b7f-4366-8b89-4ad6f9bbf88a_large/chilled-water-glass-stockcake.jpg',
                 }
@@ -57,7 +57,7 @@ router.get('/menu', authorize(['admin', 'user', 'kitchen']), async (req, res) =>
             // Ensure itemImages are present
             if (!menu.itemImages) {
                 menu.itemImages = {
-                    tea: 'https://tmdone-cdn.s3.me-south-1.amazonaws.com/store-covers/133003776906429295.jpg',
+                    tea: 'https://instacuppastore.com/cdn/shop/articles/blog-authentic-chai-recipe-morning-routine-cover_5b49c9b2-eef8-4268-bab7-3c52fff3eb49.jpg?v=1775497167',
                     coffee: 'https://i.pinimg.com/474x/7a/29/df/7a29dfc903d98c6ba13b687ef1fa1d1a.jpg',
                     water: 'https://images.stockcake.com/public/d/f/f/dffca756-1b7f-4366-8b89-4ad6f9bbf88a_large/chilled-water-glass-stockcake.jpg',
                 };

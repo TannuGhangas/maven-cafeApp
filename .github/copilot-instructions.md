@@ -5,12 +5,12 @@ Purpose: Give an AI coding agent the minimal project knowledge to be productive 
 
 - **Big picture**: This repo contains a React + Vite frontend (`maven-cafe-frontend`) and an Express + MongoDB backend (`maven-cafe-server`). The frontend calls backend endpoints under `/api` using a small wrapper `src/api/apiService.js`. The backend exposes REST endpoints in `server.js` and persists data via Mongoose models in `models/`.
 
-- **How data flows**: Frontend components call `callApi(url, method, body)` which fetches `${API_BASE_URL}${url}`. Backend endpoints live at `http://localhost:3001/api/*` (default). Authorization on the backend is done via an `authorize` middleware that expects `userId` and `userRole` in the request body (for POST/PUT) or query (for GET) — not via JWTs or headers.
+- **How data flows**: Frontend components call `callApi(url, method, body)` which fetches `${API_BASE_URL}${url}`. Backend endpoints live at `http://10.119.41.34:3001/api/*` (default). Authorization on the backend is done via an `authorize` middleware that expects `userId` and `userRole` in the request body (for POST/PUT) or query (for GET) — not via JWTs or headers.
 
 - **Important ports & env**:
   - Frontend dev: Vite (default port used by CORS config is `5173`).
   - Backend default: `3001`. Backend reads `DB_URI` from `.env` and optional `SERVER_PORT`.
-  - CORS: Backend accepts origin `http://localhost:5173` (see `server.js`).
+  - CORS: Backend accepts origin `http://10.119.41.34:5173` (see `server.js`).
 
 - **How to run locally**:
   - Backend: `cd maven-cafe-server` → create `.env` with `DB_URI=mongodb://...` → `npm install` → `npm start`.

@@ -1,189 +1,501 @@
-import React from 'react';
-// The FaChevronLeft import is present but not used on this page, as per your original file.
+import React, { useState, useEffect } from 'react';
+import { FaCoffee, FaMugHot, FaGlassWhiskey, FaTint, FaLemon, FaCube, FaUtensilSpoon } from 'react-icons/fa'; // Added FaLemon and FaCube for new items
+import { callApi } from '../../api/apiService';
 
-// Defining the inline CSS styles based on the image's aesthetics (orange accents, rounded corners, shadows).
-const styles = {
-    screenPadding: {
-        padding: '0 0 24px 0', // Remove horizontal padding for full-width banner
-        fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
-        minHeight: '100vh',
-        backgroundColor: '#fcfcfc',
-    },
-    // --- NEW STYLES FOR IMAGE HEADER ---
-    headerBanner: {
-        height: '250px', // Height remains 250px
-        width: '100%',
-        marginBottom: '25px',
-        position: 'relative',
-        borderRadius: '0 0 24px 24px', // Rounded bottom edge for the banner
-        overflow: 'hidden',
-        boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)',
-    },
-    backgroundImage: (url) => ({
-        // Using a slightly lighter gradient for a softer look
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url(${url || 'https://placehold.co/800x250/4a4a4a/ffffff?text=Add+Image+URL'})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start', 
-        padding: '50px 24px 24px 24px', // Added top padding (50px) to move text down slightly
-    }),
-    bannerTitle: {
-        fontSize: '1.8rem',
-        fontWeight: '800',
-        color: '#ffffff',
-        textShadow: '0 2px 4px rgba(0, 0, 0, 0.7)', 
-    },
-    bannerSubtitle: {
-        fontSize: '0.95rem',
-        color: 'rgba(255, 255, 255, 0.85)',
-        fontWeight: '500',
-        marginTop: '5px',
-        textShadow: '0 1px 3px rgba(0, 0, 0, 0.7)',
-    },
-    // ------------------------------------
-    contentArea: {
-        padding: '0 24px', // Re-introduce horizontal padding for content
-    },
-    headerText: {
-        fontSize: '1.5rem',
-        fontWeight: '800', // Bold header
-        color: '#333333',
-        marginBottom: '20px',
-        textAlign: 'left',
-    },
-    slotContainer: {
-        display: 'flex',
-        gap: '20px', // Increased gap
-        marginTop: '25px',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-    },
-    slotButton: (isSelected) => ({
-        // Base styling for the buttons (rounded, soft shadow)
-        flexGrow: 1,
-        minWidth: '150px', // Slightly wider min width
-        maxWidth: '250px',
-        padding: '25px 15px', // Slightly increased vertical padding
-        borderRadius: '16px',
-        border: 'none',
-        cursor: 'pointer',
-        transition: 'all 0.3s ease',
-        textAlign: 'center',
-        lineHeight: '1.4',
+/**
+ * 🎨 THEME VARIABLES - PRESERVED KEYS
+ * Changed values for a fresher, cleaner aesthetic.
+ */
+const VARS = {
+    // ☕ Color Palette - UPDATED TO USER REQUESTED COLORS
+    COLOR_PRIMARY: '#103c7f', // Dark Blue
+    COLOR_ACCENT: '#a1db40', // Green
+    COLOR_BG_LIGHT: '#fcfcfc',
+    COLOR_TEXT_DARK: '#212121',
+    COLOR_TEXT_MUTED: '#757575',
+    
+    // 📐 Sizing & Radius
+    BORDER_RADIUS_LG: '18px',
+    BORDER_RADIUS_SM: '10px',
 
-        // Conditional styling (Orange is the highlight color from the image)
-        backgroundColor: isSelected ? '#FF7A3D' : '#ffffff',
-        color: isSelected ? '#ffffff' : '#4a4a4a',
-        fontWeight: isSelected ? '700' : '600',
-        fontSize: '1.2rem', // Slightly larger text
-        boxShadow: isSelected
-            ? '0 10px 25px rgba(255, 122, 61, 0.6)' // Stronger shadow for selected
-            : '0 5px 15px rgba(0, 0, 0, 0.08)', // Refined subtle shadow for unselected
-
-        // Adding a pseudo-element or class for hover effects is complex with inline styles. 
-        // We'll rely on the transition for smooth interaction.
-        ':hover': {
-            transform: 'translateY(-2px)', // Subtle lift on hover (not fully supported in inline styles, but good intent)
-            boxShadow: isSelected 
-                ? '0 12px 30px rgba(255, 122, 61, 0.7)' 
-                : '0 7px 20px rgba(0, 0, 0, 0.12)',
-        }
-    }),
-    smallText: (isSelected) => ({
-        fontSize: '0.9rem',
-        color: isSelected ? 'rgba(255, 255, 255, 0.85)' : '#888888',
-        fontWeight: 'normal',
-    }),
-    // --- NEW STYLES FOR BREAK CARD ---
-    breakCard: {
-        marginTop: '55px',
-        backgroundColor: '#FFFFFF',
-        borderRadius: '25px', // Even larger radius
-        padding: '50px 30px', 
-        alignItems: 'center',
-        // Floating effect
-        boxShadow: '0 15px 30px rgba(0, 0, 0, 0.1)', 
-        textAlign: 'center',
-        margin: '0 auto',
-        width: '100%',
-        boxSizing: 'border-box',
-        border: 'none', // Remove subtle border
-        transition: 'all 0.5s ease',
-    },
-    breakTitle: {
-        fontSize: '32px', // Larger title
-        fontWeight: '900', // Extra bold
-        color: '#FF7A3D', 
-        marginBottom: '15px', 
-        margin: 0,
-        // Adding a subtle shake or pulse animation would require defining a <style> block, 
-        // which we avoid in React components if possible. I'll rely on large font/color contrast.
-    },
-    breakSubtitle: {
-        fontSize: '16px', // Slightly larger subtitle
-        color: '#555', 
-        margin: '0 0 5px 0'
-    },
-    breakInspiration: {
-        fontSize: '18px', // Larger and clearer
-        color: '#333',
-        fontWeight: '600',
-        marginTop: '15px',
-    }
+    // ✨ Shadows (Updated to use new ACCENT color)
+    SHADOW_ELEVATION_1: '0 2px 8px rgba(0, 0, 0, 0.05)',
+    SHADOW_ELEVATION_2: '0 8px 20px rgba(161, 219, 64, 0.5)', // Using new Green ACCENT color for selection shadow
+    SHADOW_ELEVATION_3: '0 10px 30px rgba(0, 0, 0, 0.1)',
 };
 
-const UserHomePage = ({ setPage, currentOrder, setCurrentOrder, styles: _propStyles }) => {
-    // === HERE IS WHERE YOU CAN PASTE YOUR IMAGE ADDRESS ===
-    // Replace the empty string '' below with the URL of your desired background image.
-    const HEADER_IMAGE_URL = 'https://tmdone-cdn.s3.me-south-1.amazonaws.com/store-covers/133003776906429295.jpg'; 
-    // Example: const HEADER_IMAGE_URL = 'https://i.imgur.com/your-cafe-image.jpg';
-    // ======================================================
+/**
+ * 💅 STYLES_THEME - BEAUTIFIED & ORGANIZED (KEYS PRESERVED)
+ * Adjusted vertical margins for less gap/space.
+ */
+export const STYLES_THEME = {
+    // --- LAYOUT & BASE STYLES ---
+    centeredContainer: {
+        maxWidth: '480px',
+        margin: '0 auto',
+        boxShadow: VARS.SHADOW_ELEVATION_1,
+        backgroundColor: VARS.COLOR_BG_LIGHT,
+        minHeight: '100vh',
+    },
+    screenPadding: {
+        padding: '0 0 30px 0', // Reduced bottom padding
+        fontFamily: 'Inter, system-ui, sans-serif',
+        minHeight: '100vh',
+        backgroundColor: VARS.COLOR_BG_LIGHT,
+    },
+    contentArea: {
+        padding: '0 24px',
+    },
+    
+    // --- TYPOGRAPHY & HEADERS ---
+headerText: {
+fontSize: '1.3rem',
+fontWeight: '800',
+color: VARS.COLOR_TEXT_DARK,
+marginBottom: '20px', // Reduced margin
+borderLeft: `5px solid ${VARS.COLOR_ACCENT}`, // Use Green ACCENT color
+paddingLeft: '10px',
+fontFamily: 'Cambria, serif',
+},
+    label: {
+        display: 'block',
+        fontSize: '0.95rem',
+        fontWeight: '700',
+        color: VARS.COLOR_TEXT_DARK,
+        marginTop: '20px',
+        marginBottom: '8px',
+    },
 
-    return (
-        <div style={styles.screenPadding}>
-            {/* Image Header Section */}
-            <div style={styles.headerBanner}>
-                <div style={styles.backgroundImage(HEADER_IMAGE_URL)}>
-                    <h1 style={styles.bannerTitle}>Good Morning</h1>
-                    <p style={styles.bannerSubtitle}>Start your day with a warm cup</p>
-                </div>
-            </div>
+    // --- FORMS & INPUTS ---
+    inputField: {
+        width: '100%',
+        padding: '14px',
+        borderRadius: VARS.BORDER_RADIUS_SM,
+        border: '1px solid #e0e0e0',
+        boxSizing: 'border-box',
+        fontSize: '1rem',
+        backgroundColor: '#ffffff',
+        boxShadow: 'inset 0 1px 3px rgba(0, 0, 0, 0.03)',
+        transition: 'border-color 0.3s',
+    },
+    selectField: {
+        width: '100%',
+        padding: '14px',
+        borderRadius: VARS.BORDER_RADIUS_SM,
+        border: '1px solid #e0e0e0',
+        boxSizing: 'border-box',
+        fontSize: '1rem',
+        backgroundColor: '#ffffff',
+        appearance: 'none',
+        backgroundImage: 'url("https://c8.alamy.com/comp/2WMG0FK/teaware-ceramics-at-the-my-cup-of-tea-shop-piccaddilly-circus-london-england-2WMG0FK.jpg")',
+backgroundRepeat: 'no-repeat',
+backgroundPosition: 'right 15px center',
+backgroundSize: '12px',
+},
 
-            <div style={styles.contentArea}>
-                {/* Slot Selection Content */}
-                <h2 style={styles.headerText}>Select Slot:</h2>
-                <div style={styles.slotContainer}>
-                    {['morning (9:00-12:00)', 'afternoon (1:00 - 5:30)'].map(slot => (
-                        <button 
-                            key={slot}
-                            style={styles.slotButton(currentOrder.slot === slot)}
-                            onClick={() => {
-                                setCurrentOrder(prev => ({ ...prev, slot }));
-                                setPage('item-selection');
-                            }}
-                        >
-                            {slot.split('(')[0].trim()}
-                            <br /><small style={styles.smallText(currentOrder.slot === slot)}>({slot.split('(')[1]}</small>
-                        </button>
-                    ))}
-                </div>
+// --- BUTTONS ---
+primaryButton: {
+width: '100%',
+padding: '18px',
+borderRadius: VARS.BORDER_RADIUS_SM,
+backgroundColor: VARS.COLOR_PRIMARY,
+color: 'white',
+border: 'none',
+fontSize: '1.1rem',
+fontWeight: 'bold',
+cursor: 'pointer',
+boxShadow: `0 6px 15px ${VARS.COLOR_PRIMARY}60`,
+transition: 'all 0.3s ease',
+marginTop: '30px',
+},
+secondaryButton: {
+width: '100%',
+padding: '15px',
+borderRadius: VARS.BORDER_RADIUS_SM,
+backgroundColor: VARS.COLOR_ACCENT,
+color: VARS.COLOR_TEXT_DARK,
+border: `1px solid ${VARS.COLOR_ACCENT}50`,
+fontSize: '1rem',
+fontWeight: '600',
+cursor: 'pointer',
+display: 'flex',
+alignItems: 'center',
+justifyContent: 'center',
+gap: '8px',
+boxShadow: VARS.SHADOW_ELEVATION_1,
+transition: 'all 0.3s ease',
+},
 
-                {/* Updated "Time for a break" card with better aesthetics and additional text */}
-                <div style={styles.breakCard}>
-                    <h3 style={styles.breakTitle}>☕ Time for a break ☕</h3>
-                    <p style={styles.breakSubtitle}>
-                        -Crafted with 💖 in Maven jobs, Panipat
-                    </p>
-                    <p style={styles.breakInspiration}>
-                        The next slot is available for you to plan your perfect pause.
-                    </p>
-                </div>
-            </div>
-        </div>
-    );
+// --- COMPONENT: HEADER BANNER ---
+headerBanner: {
+height: '120px',
+width: '100%',
+marginBottom: '20px',
+borderRadius: `0 0 ${VARS.BORDER_RADIUS_LG} ${VARS.BORDER_RADIUS_LG}`,
+overflow: 'hidden',
+boxShadow: VARS.SHADOW_ELEVATION_3,
+position: 'relative',
+marginTop: '0', // Attach directly to navbar
+},
+bannerTitle: {
+fontSize: '1.5rem',
+fontWeight: '900',
+color: '#ffffff',
+textShadow: '0 2px 4px rgba(0, 0, 0, 0.9)',
+lineHeight: '1.1',
+margin: '0',
+fontFamily: 'Cambria, serif',
+},
+bannerSubtitle: {
+fontSize: '0.9rem',
+color: 'rgba(255, 255, 255, 0.95)',
+fontWeight: '500',
+marginTop: '4px',
+textShadow: '0 1px 2px rgba(0, 0, 0, 0.8)',
+margin: '0',
+},
+backgroundImage: (url) => ({
+backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.1) 100%), url(${url || 'https://placehold.co/800x230/4a4a4a/ffffff?text=Add+Image+URL'})`,
+backgroundSize: 'cover',
+backgroundPosition: 'center',
+height: '100%',
+display: 'flex',
+flexDirection: 'column',
+justifyContent: 'center',
+alignItems: 'center',
+padding: '0 24px',
+textAlign: 'center',
+}),
+
+// --- COMPONENT: SLOT SELECTION ---
+slotContainer: {
+display: 'flex',
+gap: '10px',
+marginBottom: '30px',
+flexWrap: 'wrap',
+justifyContent: 'space-between',
+},
+slotButton: (isSelected) => ({
+flex: '1 1 48%',
+minWidth: '100px',
+padding: '10px 15px',
+borderRadius: VARS.BORDER_RADIUS_SM,
+border: isSelected ? 'none' : `1px solid #e0e0e0`,
+cursor: 'pointer',
+transition: 'all 0.3s ease',
+textAlign: 'center',
+backgroundColor: isSelected ? VARS.COLOR_PRIMARY : '#ffffff',
+color: isSelected ? '#ffffff' : VARS.COLOR_TEXT_DARK,
+fontWeight: isSelected ? '700' : '600',
+fontSize: '0.9rem',
+boxShadow: isSelected ? VARS.SHADOW_ELEVATION_2 : VARS.SHADOW_ELEVATION_1,
+transform: isSelected ? 'scale(1.03)' : 'scale(1)',
+display: 'flex',
+flexDirection: 'column',
+}),
+smallText: (isSelected) => ({
+fontSize: '0.75rem',
+color: isSelected ? 'rgba(255, 255, 255, 0.9)' : VARS.COLOR_TEXT_MUTED,
+fontWeight: '500',
+display: 'block',
+marginTop: '5px',
+}),
+
+// --- COMPONENT: ITEM SELECTION ---
+itemHeader: {
+fontSize: '1.2rem',
+fontWeight: '800',
+color: VARS.COLOR_TEXT_DARK,
+marginBottom: '20px',
+textAlign: 'left',
+},
+itemSelectionGrid: {
+display: 'grid',
+gridTemplateColumns: '1fr 1fr',
+gap: '15px',
+marginBottom: '30px',
+},
+itemButton: {
+width: '100%',
+height: '150px',
+padding: '0',
+borderRadius: VARS.BORDER_RADIUS_SM,
+border: 'none',
+overflow: 'hidden',
+position: 'relative',
+cursor: 'pointer',
+boxShadow: VARS.SHADOW_ELEVATION_1,
+backgroundColor: '#ffffff',
+textAlign: 'left',
+transition: 'transform 0.2s, box-shadow 0.2s',
+display: 'flex',
+flexDirection: 'column',
+justifyContent: 'space-between',
+},
+imageContainer: (itemName, itemImages) => ({
+width: '100%',
+height: '100%',
+backgroundImage: itemImages[itemName] ? `url(${itemImages[itemName]})` : 'none',
+backgroundSize: 'cover',
+backgroundPosition: 'center',
+backgroundRepeat: 'no-repeat',
+}),
+itemText: {
+margin: '0',
+display: 'block',
+padding: '10px 15px',
+color: VARS.COLOR_TEXT_DARK,
+fontWeight: '600',
+fontSize: '1.1rem',
+},
+
+// --- COMPONENT: FOOTER ---
+footerCard: {
+marginTop: '40px',
+backgroundColor: '#FFFFFF',
+borderRadius: VARS.BORDER_RADIUS_LG,
+padding: '0',
+boxShadow: VARS.SHADOW_ELEVATION_3,
+textAlign: 'center',
+margin: '40px 24px 0 24px',
+width: 'auto',
+height: '120px', // Match header banner height
+border: `1px solid #f0f0f0`,
+display: 'flex',
+flexDirection: 'column',
+justifyContent: 'center',
+alignItems: 'center',
+position: 'relative',
+overflow: 'hidden',
+background: `linear-gradient(135deg, ${VARS.COLOR_PRIMARY}15 0%, ${VARS.COLOR_ACCENT}10 100%)`,
+},
+footerContent: {
+padding: '0 20px',
+zIndex: 1,
+},
+footerTitle: {
+fontSize: '1.4rem',
+fontWeight: '900',
+color: VARS.COLOR_PRIMARY,
+marginBottom: '8px',
+fontFamily: 'Cambria, serif',
+textShadow: '0 1px 2px rgba(0,0,0,0.1)',
+},
+footerSubtitle: {
+fontSize: '0.95rem',
+color: VARS.COLOR_TEXT_MUTED,
+margin: '0',
+fontWeight: '500',
+lineHeight: '1.4',
+},
+footerInspiration: {
+fontSize: '0.85rem',
+color: VARS.COLOR_TEXT_DARK,
+fontWeight: '600',
+marginTop: '6px',
+fontStyle: 'italic',
+},
+};
+
+// --- ITEM DATA ---
+const getItemButtons = () => {
+try {
+const saved = localStorage.getItem('adminMenuCategories');
+if (saved) {
+const categories = JSON.parse(saved);
+return categories.map(cat => ({
+name: cat.name.toLowerCase(),
+icon: cat.icon === 'FaCoffee' ? FaCoffee :
+cat.icon === 'FaMugHot' ? FaMugHot :
+cat.icon === 'FaGlassWhiskey' ? FaGlassWhiskey :
+cat.icon === 'FaTint' ? FaTint :
+cat.icon === 'FaLemon' ? FaLemon :
+cat.icon === 'FaCube' ? FaCube :
+FaUtensilSpoon
+}));
+}
+} catch {}
+// Default
+return [
+{ name: 'coffee', icon: FaCoffee },
+{ name: 'tea', icon: FaMugHot },
+{ name: 'water', icon: FaTint },
+];
+};
+
+
+// -----------------
+
+const timeSlots = [
+// Added description for the small text
+{ title: 'Morning', slot: 'morning (9:00-12:00)'},
+{ title: 'Evening', slot: 'evening (1:00 - 5:30)'},
+];
+
+const UserHomePage = ({ setPage, currentOrder, setCurrentOrder, user, styles: _propStyles }) => {
+const [itemButtons, setItemButtons] = useState([]);
+const [itemImages, setItemImages] = useState({
+  tea: 'https://shriandsam.com/cdn/shop/articles/the-fascinating-kulhad-chai-1191754.png?v=1763362130&width=2048',
+  coffee: 'https://i.pinimg.com/474x/7a/29/df/7a29dfc903d98c6ba13b687ef1fa1d1a.jpg',
+  water: 'https://images.stockcake.com/public/d/f/f/dffca756-1b7f-4366-8b89-4ad6f9bbf88a_large/chilled-water-glass-stockcake.jpg',
+});
+
+// KEPT ORIGINAL USER URL
+const HEADER_IMAGE_URL = 'https://shriandsam.com/cdn/shop/articles/the-fascinating-kulhad-chai-1191754.png?v=1763362130&width=2048';
+
+const currentHour = new Date().getHours();
+const greeting = currentHour < 12 ? 'Good Morning!' : 'Hello there!';
+const primaryMessage = `${greeting} Ready to order?`;
+
+const currentSlotTitle = timeSlots.find(s => s.slot === currentOrder.slot)?.title || 'Your Slot';
+
+useEffect(() => {
+// Helper function to get icon component
+const getIconForCategory = (iconName) => {
+const iconMap = {
+'FaCoffee': FaCoffee,
+'FaMugHot': FaMugHot,
+'FaGlassWhiskey': FaGlassWhiskey,
+'FaTint': FaTint,
+'FaLemon': FaLemon,
+'FaCube': FaCube,
+'FaUtensilSpoon': FaUtensilSpoon
+};
+return iconMap[iconName] || FaUtensilSpoon;
+};
+
+// Load cached menu immediately for instant display
+const loadCachedMenu = () => {
+const cachedMenu = localStorage.getItem('cachedMenu');
+if (cachedMenu) {
+try {
+const menu = JSON.parse(cachedMenu);
+if (menu && menu.categories) {
+const filteredCategories = menu.categories.filter(cat => cat.name.toLowerCase() !== 'milk');
+const buttons = filteredCategories.map(cat => ({
+name: cat.name.toLowerCase(),
+icon: getIconForCategory(cat.icon),
+items: cat.items || []
+}));
+setItemButtons(buttons);
+// Do not set itemImages from cache
+return true;
+}
+} catch (e) {
+console.warn('Failed to parse cached menu:', e);
+}
+}
+return false;
+};
+
+// Set default menu immediately
+if (!loadCachedMenu()) {
+setItemButtons([
+{ name: 'coffee', icon: FaCoffee },
+{ name: 'tea', icon: FaMugHot },
+{ name: 'water', icon: FaTint },
+]);
+
+}
+
+// Fetch fresh menu data in background (no loading state)
+const fetchMenuInBackground = async () => {
+try {
+const menu = await callApi(`/menu?userId=${user.id}&userRole=${user.role}`, 'GET', null, true);
+if (menu && menu.categories) {
+localStorage.setItem('cachedMenu', JSON.stringify(menu));
+const filteredCategories = menu.categories.filter(cat => cat.name.toLowerCase() !== 'milk');
+const buttons = filteredCategories.map(cat => ({
+name: cat.name.toLowerCase(),
+icon: getIconForCategory(cat.icon),
+items: cat.items || []
+}));
+setItemButtons(buttons);
+// Do not overwrite itemImages
+}
+} catch (error) {
+console.warn('Background menu fetch failed:', error);
+}
+};
+
+fetchMenuInBackground();
+}, [user]);
+
+
+
+return (
+<div style={STYLES_THEME.centeredContainer}>
+<div style={STYLES_THEME.screenPadding}>
+{/* Image Header Section */}
+<div style={STYLES_THEME.headerBanner}>
+<div style={STYLES_THEME.backgroundImage(HEADER_IMAGE_URL)}>
+<h1 style={STYLES_THEME.bannerTitle}>{primaryMessage}</h1>
+<p style={STYLES_THEME.bannerSubtitle}>Fuel your day with a delicious order.</p>
+</div>
+</div>
+
+<div style={STYLES_THEME.contentArea}>
+{/* Slot Selection Content */}
+<h2 style={STYLES_THEME.headerText}>Select Your Time Slot: 🕓</h2>
+<div style={STYLES_THEME.slotContainer}>
+{timeSlots.map(({ title, slot, description }) => (
+<button
+key={slot}
+style={STYLES_THEME.slotButton(currentOrder.slot === slot)}
+onClick={() => {
+setCurrentOrder(prev => ({ ...prev, slot }));
+}}
+>
+{title}
+<small style={STYLES_THEME.smallText(currentOrder.slot === slot)}>
+{description}
+</small>
+</button>
+))}
+</div>
+
+{/* Item Selection Grid (Rendered only when a slot is selected) */}
+{currentOrder.slot && (
+<>
+<h3 style={STYLES_THEME.itemHeader}>Select Items for {currentSlotTitle} 🍲</h3>
+<div style={STYLES_THEME.itemSelectionGrid}>
+{itemButtons.filter(item => {
+const hasAvailableItems = (item.items || []).some(it => typeof it === 'string' || it.available !== false);
+return hasAvailableItems; // Only show categories with available items
+}).map(item => (
+<button
+key={item.name}
+style={STYLES_THEME.itemButton}
+onClick={() => setPage(`item-config-${item.name}`)}
+>
+<div style={STYLES_THEME.imageContainer(item.name, itemImages)}>
+&nbsp; {/* Ensure div has content for background to show */}
+</div>
+<p style={STYLES_THEME.itemText}>
+{item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+</p>
+</button>
+))}
+</div>
+</>
+)}
+</div>
+
+{/* Footer */}
+<div style={STYLES_THEME.footerCard}>
+<div style={STYLES_THEME.footerContent}>
+<h3 style={STYLES_THEME.footerTitle}>☕ Take a Moment ☕</h3>
+<p style={STYLES_THEME.footerSubtitle}>
+Crafted with 💖 at Maven Jobs, Panipat
+</p>
+<p style={STYLES_THEME.footerInspiration}>
+Perfect moments deserve perfect pauses
+</p>
+</div>
+</div>
+</div>
+</div>
+);
 };
 
 export default UserHomePage;
