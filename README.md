@@ -8,10 +8,15 @@ A full-stack Cafe Management System designed to handle internal café operations
 
 This system is built to manage café operations in a structured and automated way:
 
-![Admin 1](screenshots/admin1.png)
-![Admin 2](screenshots/admin2.png)
-![Admin 3](screenshots/admin3.png)
-![Admin 4](screenshots/admin4.png)
+<p align="center">
+  <img src="screenshots/admin1.png" width="250"/>
+  <img src="screenshots/admin2.png" width="250"/>
+  <img src="screenshots/admin3.png" width="250"/>
+</p>
+
+<p align="center">
+  <img src="screenshots/admin4.png" width="250"/>
+</p>
 
 ###  Admin Dashboard
 - Create and manage user login credentials  
