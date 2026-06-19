@@ -9,7 +9,7 @@ A full-stack Cafe Management System designed to handle internal café operations
 This system is built to manage café operations in a structured and automated way:
 
 <p align="center">
-  <img src="screenshots/admin1.png" width="250"/>
+  <img src="screenshots/admin1.png" width="350"/>
   <img src="screenshots/admin2.png" width="250"/>
   <img src="screenshots/admin3.png" width="250"/>
 </p>
