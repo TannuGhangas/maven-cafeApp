@@ -9,13 +9,13 @@ A full-stack Cafe Management System designed to handle internal café operations
 This system is built to manage café operations in a structured and automated way:
 
 <p align="center">
-  <img src="screenshots/admin1.png" width="450"/>
-  <img src="screenshots/admin2.png" width="450"/>
-  <img src="screenshots/admin3.png" width="450"/>
+  <img src="screenshots/admin1.png" width="350"/>
+  <img src="screenshots/admin2.png" width="350"/>
+  <img src="screenshots/admin3.png" width="350"/>
 </p>
 
 <p align="center">
-  <img src="screenshots/admin4.png" width="450"/>
+  <img src="screenshots/admin4.png" width="350"/>
 </p>
 
 ###  Admin Dashboard
@@ -30,15 +30,15 @@ This system is built to manage café operations in a structured and automated wa
 ###  User Dashboard
 
 <p align="center">
-  <img src="screenshots/user1.png" width="450"/>
-  <img src="screenshots/user2.png" width="450"/>
-  <img src="screenshots/user3.png" width="450"/>
+  <img src="screenshots/user1.png" width="250"/>
+  <img src="screenshots/user2.png" width="250"/>
+  <img src="screenshots/user3.png" width="250"/>
 </p>
 
 <p align="center">
-  <img src="screenshots/user4.png" width="450"/>
-  <img src="screenshots/user5.png" width="450"/>
-  <img src="screenshots/user6.png" width="450"/>
+  <img src="screenshots/user4.png" width="250"/>
+  <img src="screenshots/user5.png" width="250"/>
+  <img src="screenshots/user6.png" width="250"/>
 </p>
 
 - Home page and configuration page  
@@ -54,9 +54,9 @@ This system is built to manage café operations in a structured and automated wa
 ###  Kitchen Dashboard
 
 <p align="center">
-  <img src="screenshots/kitchen1.png" width="450"/>
-  <img src="screenshots/kitchen2.png" width="450"/>
-  <img src="screenshots/kitchen3.png" width="450"/>
+  <img src="screenshots/kitchen1.png" width="300"/>
+  <img src="screenshots/kitchen2.png" width="300"/>
+  <img src="screenshots/kitchen3.png" width="300"/>
 </p>
 
 - View incoming orders in real-time  
