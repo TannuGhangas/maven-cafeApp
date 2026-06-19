@@ -8,6 +8,11 @@ A full-stack Cafe Management System designed to handle internal café operations
 
 This system is built to manage café operations in a structured and automated way:
 
+![Admin 1](screenshots/admin1.png)
+![Admin 2](screenshots/admin2.png)
+![Admin 3](screenshots/admin3.png)
+![Admin 4](screenshots/admin4.png)
+
 ###  Admin Dashboard
 - Create and manage user login credentials  
 - Monitor all orders with detailed information  
@@ -16,20 +21,37 @@ This system is built to manage café operations in a structured and automated wa
 
 ---
 
+
+###  User Dashboard
+
+![User 1](screenshots/user1.png)
+![User 2](screenshots/user2.png)
+![User 3](screenshots/user3.png)
+![User 4](screenshots/user4.png)
+![User 5](screenshots/user5.png)
+![User 6](screenshots/user6.png)
+
+- Home page and configuration page  
+- Place new orders easily  
+- View order confirmation  
+- Track order history  
+- Request staff assistance using “Head Call” feature
+
+
+
+---
+
 ###  Kitchen Dashboard
+
+![Kitchen 1](screenshots/kitchen1.png)
+![Kitchen 2](screenshots/kitchen2.png)
+![Kitchen 3](screenshots/kitchen3.png)
+
 - View incoming orders in real-time  
 - Update order status (Preparing, Completed, etc.)  
 - Status updates reflect instantly across the system  
 - Receive alerts for new orders  
 
----
-
-###  User Dashboard
-- Home page and configuration page  
-- Place new orders easily  
-- View order confirmation  
-- Track order history  
-- Request staff assistance using “Head Call” feature  
 
 ---
 
